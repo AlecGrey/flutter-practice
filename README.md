@@ -1,6 +1,6 @@
 # demo_app
 
-practicing Dart and flutter development
+learning the basics of dart & flutter!
 
 ## Getting Started
 
