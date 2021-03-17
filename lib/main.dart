@@ -18,10 +18,11 @@ class _MyAppState extends State<MyApp> {
 
   void _answerQuestion() {
     print(_index);
-    if (_index == _questions.length - 1)
-      setState(() => _index = 0);
-    else
-      setState(() => _index++);
+    setState(() => _index++);
+  }
+
+  bool _questionsRemaining() {
+    return _questions.length > _index;
   }
 
   static const _questions = [
@@ -48,22 +49,32 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'App',
-            ),
-            backgroundColor: Colors.blueGrey[700],
+        appBar: AppBar(
+          title: Text(
+            'App',
           ),
-          body: Column(
-            children: [
-              Question(
-                _questions[_index]['questionText'],
+          backgroundColor: Colors.blueGrey[700],
+        ),
+        body: _questionsRemaining()
+            ? Column(
+                children: [
+                  Question(
+                    _questions[_index]['questionText'],
+                  ),
+                  ...(_questions[_index]['answers'] as List<String>)
+                      .map((answer) {
+                    return Answer(_answerQuestion, answer);
+                  }).toList()
+                ],
+              )
+            : Center(
+                child: Text('No questions remain.',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300,
+                    )),
               ),
-              ...(_questions[_index]['answers'] as List<String>).map((answer) {
-                return Answer(_answerQuestion, answer);
-              }).toList()
-            ],
-          )),
+      ),
     );
   }
 }
